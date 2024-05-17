@@ -2,12 +2,15 @@
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
 /*    Author:       Li Zhao                                                   */
-/*    Created:      5/16/2024, 4:36:38 PM                                     */
+/*    Created:      5/11/2024, 2:20:05 PM                                     */
 /*    Description:  V5 project                                                */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
+#include "Autonomous/autonMain.h"
+#include "Utility/testFunction.h"
+
 
 using namespace vex;
 
@@ -46,7 +49,10 @@ void autonomous(void) {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
+  auton::runAutonomous(gameInfo::allianceColor::Red , auton::autonomousType::AutonSkills);
 }
+
+
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
@@ -60,6 +66,7 @@ void autonomous(void) {
 
 void usercontrol(void) {
   // User control code here, inside the loop
+  testFunction::inertialSensorCalibration();
   while (1) {
     // This is the main execution loop for the user control program.
     // Each time through the loop your program should update motor + servo
@@ -69,6 +76,30 @@ void usercontrol(void) {
     // Insert user code here. This is where you use the joystick values to
     // update your motors, etc.
     // ........................................................................
+    // Calibrate the sensor (important to do this before using it)
+  
+
+
+   // Brain.Screen.printAt( 10, 50, "Hello V5" );
+    
+    testFunction::inertialSensorShowYaw();
+
+    testFunction::inertialSensorShowAcceleration();
+    //testFunction::inertialSensorShowRoll();
+    if (Controller1.ButtonX.pressing()){
+           testFunction::LeftMotorsSpinForwardByVelocity();
+    }
+    if (Controller1.ButtonB.pressing()){
+           testFunction::LeftMotorsStopHold();
+    }
+    if (Controller1.ButtonY.pressing()){
+           testFunction::LeftMotorsStopBrake();
+    }
+
+    //轮子还能动，继续滑行
+    if (Controller1.ButtonA.pressing()){
+           testFunction::LeftMotorsStopCoast();
+    }
 
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
